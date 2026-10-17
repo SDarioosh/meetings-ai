@@ -1,0 +1,17 @@
+extends: default
+name: standup
+description: Daily standup — per-person updates, blockers and today's commitments.
+detail: standard
+sections:
+  - executive_summary
+  - action_items
+  - risks
+custom_sections:
+  - key: updates_by_person
+    title: Updates by Person
+    type: list
+    instructions: >-
+      One bullet per person, formatted "Name: yesterday … / today … / blockers …".
+guidance:
+  executive_summary: Two or three sentences on overall team status.
+  risks: Blockers raised by anyone, and who is unblocking them.

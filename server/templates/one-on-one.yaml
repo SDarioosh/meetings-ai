@@ -1,0 +1,18 @@
+extends: default
+name: one-on-one
+description: Manager / report 1:1 — topics, feedback, growth and follow-ups.
+detail: standard
+sections:
+  - executive_summary
+  - key_points
+  - action_items
+  - open_questions
+custom_sections:
+  - key: feedback
+    title: Feedback Exchanged
+    type: list
+    instructions: Feedback given in either direction, attributed to who gave it.
+  - key: career_growth
+    title: Career & Growth
+    type: text
+    instructions: Anything discussed about goals, development or career; empty string if none.

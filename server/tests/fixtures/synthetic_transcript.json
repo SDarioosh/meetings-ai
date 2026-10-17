@@ -1,0 +1,20 @@
+{
+  "source_file": "synthetic-planning-sync.wav",
+  "language": "en",
+  "duration": 312.0,
+  "model": "synthetic",
+  "diarized": true,
+  "segments": [
+    {"start": 0.0, "end": 6.5, "speaker": "Speaker 1", "text": "Okay, let's start. This is the launch planning sync for the Falcon dashboard."},
+    {"start": 6.8, "end": 14.2, "speaker": "Speaker 1", "text": "Priya, can you give us the status on the export feature?"},
+    {"start": 14.5, "end": 25.0, "speaker": "Speaker 2", "text": "Sure. CSV export is done. PDF export is about seventy percent there, I'll have it finished by next Friday."},
+    {"start": 25.3, "end": 33.0, "speaker": "Speaker 3", "text": "We still haven't decided whether PDF export ships in version one or waits for version two."},
+    {"start": 33.4, "end": 42.0, "speaker": "Speaker 1", "text": "Let's decide now. PDF export ships in version one, since two customers asked for it."},
+    {"start": 42.2, "end": 50.0, "speaker": "Speaker 3", "text": "Fine with me. Someone needs to update the pricing page before launch though."},
+    {"start": 50.4, "end": 60.0, "speaker": "Speaker 2", "text": "The other risk is the reporting API rate limit. If we hit it during the demo, charts won't load."},
+    {"start": 60.3, "end": 68.0, "speaker": "Speaker 1", "text": "Marco, can you add caching for the reporting API? Done means charts load under two seconds."},
+    {"start": 68.2, "end": 72.0, "speaker": "Speaker 3", "text": "Yes, I'll take the caching work."},
+    {"start": 72.5, "end": 80.0, "speaker": "Speaker 1", "text": "Do we know the launch date yet? Marketing hasn't confirmed."},
+    {"start": 80.2, "end": 86.0, "speaker": "Speaker 2", "text": "No, that's still open. Let's revisit next week."}
+  ]
+}

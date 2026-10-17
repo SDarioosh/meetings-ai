@@ -1,0 +1,24 @@
+extends: default
+name: sales-call
+description: Customer / sales call — needs, objections, buying signals and next steps.
+sections:
+  - executive_summary
+  - key_points
+  - action_items
+  - plan
+  - risks
+custom_sections:
+  - key: customer_needs
+    title: Customer Needs & Pain Points
+    type: list
+    instructions: Problems, requirements and goals the customer described, in their words where possible.
+  - key: objections
+    title: Objections & Concerns
+    type: list
+    instructions: Every objection or hesitation raised (price, timing, competitors, security…) and how it was answered.
+  - key: buying_signals
+    title: Buying Signals
+    type: list
+    instructions: Budget, timeline, decision-makers and process mentioned.
+guidance:
+  risks: Deal risks — competitors, missing stakeholders, budget or timing concerns.

@@ -1,0 +1,116 @@
+# Meetings.ai summary template. Copy this file (e.g. my-team.yaml) and tune it;
+# select it with `--template my-team` or MEETINGS_TEMPLATE=my-team.
+# Other templates can `extends: default` and override only what they change.
+
+name: default
+description: Detailed general-purpose meeting minutes with decisions, action items and a plan.
+
+# brief | standard | detailed — controls how much the model writes per section
+detail: detailed
+
+# Built-in sections to produce, in render order. Remove any you don't want.
+# Available: executive_summary, key_points, decisions, action_items, plan, open_questions, risks
+sections:
+  - executive_summary
+  - key_points
+  - decisions
+  - action_items
+  - plan
+  - open_questions
+  - risks
+
+# Extra sections of your own. type: text (a paragraph) or list (bullets).
+custom_sections: []
+#  - key: customer_feedback
+#    title: Customer Feedback
+#    type: list
+#    instructions: Every piece of feedback the customer gave about the product, verbatim where possible.
+
+# Per-section guidance. Override any built-in guidance here.
+guidance:
+  executive_summary: >-
+    One paragraph (4-8 sentences) a busy stakeholder could read instead of attending:
+    purpose of the meeting, the main outcomes, and what happens next.
+  key_points: >-
+    The substantive discussion points, in the order discussed. Include numbers, names,
+    dates and reasoning that were stated. One bullet per distinct point.
+  decisions: >-
+    Only decisions that were actually agreed in the meeting (not proposals or ideas).
+    `context` explains why or any conditions attached.
+  action_items: >-
+    Every commitment or task someone agreed to do. `owner` is the person who will do it,
+    `due_date` is the deadline exactly as stated, `acceptance_criteria` is what "done" means.
+    Use "unresolved" for owner, due_date or acceptance_criteria if not explicitly stated —
+    never guess. acceptance_criteria must be a success condition someone actually said
+    (e.g. "loads in under two seconds"); do not restate the task as its own criteria.
+  plan: >-
+    The overall plan / next steps as an ordered sequence, combining the action items and
+    any agreed timeline into a coherent roadmap. Use "unresolved" for unknown owners/timeframes.
+  open_questions: >-
+    Questions raised but not answered, and issues explicitly deferred or left unresolved.
+  risks: >-
+    Risks, blockers, dependencies or concerns that were mentioned, with any mitigation discussed
+    (empty string if none was discussed).
+
+# Free-form extra instructions appended to every request — the easiest knob to tune.
+extra_instructions: ""
+
+system_prompt: |
+  You are an expert meeting analyst who writes precise, faithful meeting minutes.
+  Rules:
+  - Use ONLY information present in the transcript. Never invent names, dates, numbers or tasks.
+  - If something is ambiguous or not stated, write "unresolved" rather than guessing.
+  - Refer to people by the name used in the transcript; if only a speaker label is known
+    (e.g. "SPEAKER_01"), use that label.
+  - Transcripts come from speech recognition and may contain errors; silently correct obvious
+    mis-hearings only when the meaning is unambiguous.
+  - Write in the same language as the meeting.
+
+user_prompt: |
+  Produce meeting minutes for the transcript below.
+
+  Meeting info:
+  - Date: {{ meeting.date or "unknown" }}
+  - Duration: {{ meeting.duration or "unknown" }}
+  - Speakers: {{ meeting.speakers | join(", ") if meeting.speakers else "not labelled" }}
+  {% if chunk %}
+  NOTE: This is part {{ chunk.index }} of {{ chunk.total }} of a long meeting. Summarize only this part;
+  the parts will be merged afterwards.
+  {% endif %}
+
+  Level of detail: {{ detail_instructions }}
+
+  Sections to produce:
+  {% for s in sections %}
+  - {{ s.title }} (`{{ s.key }}`): {{ s.guidance }}
+  {% endfor %}
+  - Title (`title`): a short descriptive title for the meeting (max 10 words).
+
+  {% if extra_instructions %}
+  Additional instructions: {{ extra_instructions }}
+  {% endif %}
+
+  {{ output_instructions }}
+
+  <transcript>
+  {{ transcript }}
+  </transcript>
+
+merge_prompt: |
+  The following are partial minutes for consecutive parts of ONE long meeting, in order.
+  Merge them into a single set of minutes for the whole meeting: de-duplicate items,
+  keep the most specific owner/date for each action item, combine the plan into one
+  ordered roadmap, and drop open questions that a later part answered.
+  The executive summary must cover the entire meeting.
+
+  Level of detail: {{ detail_instructions }}
+
+  {% if extra_instructions %}
+  Additional instructions: {{ extra_instructions }}
+  {% endif %}
+
+  {{ output_instructions }}
+
+  <partial_minutes>
+  {{ partials }}
+  </partial_minutes>

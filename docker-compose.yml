@@ -1,0 +1,30 @@
+# Runs the Meetings.ai server on a GPU host, watching ./data/inbox for new recordings.
+#   docker compose build
+#   docker compose run --rm meetings check
+#   docker compose up -d            # start the folder watcher
+services:
+  meetings:
+    build:
+      context: ./server
+    image: meetings-ai-server:latest
+    env_file: .env
+    environment:
+      MEETINGS_WHISPER_DEVICE: cuda
+    volumes:
+      - ./data:/data                          # data/inbox in, data/meetings out
+      - ./server/templates:/app/templates     # edit templates without rebuilding
+      - hf-cache:/cache/huggingface           # Whisper + pyannote models (download once)
+    # Host networking so the container reaches llama-server exactly as the host does
+    # (localhost, LAN or Tailscale addresses).
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+volumes:
+  hf-cache:

@@ -1,0 +1,29 @@
+# secrets / local config — never commit your server address or HF token
+.env
+*.env.local
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+dist/
+build/
+
+# meeting data (private!)
+meetings/
+inbox/
+recordings/
+*.wav
+*.m4a
+*.mp3
+*.aiff
+!server/tests/fixtures/*.wav
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/
+data/
